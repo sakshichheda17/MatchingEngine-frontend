@@ -1,3 +1,50 @@
-<section class="hero is-fullheight is-medium is-primary is-bold">
-<p>dashboard works!</p>
-</section>
+<div class="MainBackground ">
+    <div id="myModal" class="modal">
+        <!-- Modal -->
+        <div class="modal-content">
+            <span class="close" (click)='CloseModal()'>&times;</span>
+            <span *ngIf='CurrentStock != undefined'>Stock Code: {{CurrentStock.key}}</span>
+            <span style="margin-left: 30px;" *ngIf='CurrentStock != undefined'>Stock Name: {{CurrentStock.Name}}</span>
+            <p *ngIf='CurrentStock != undefined'>Price: {{CurrentStock.Value}}</p>
+            <p *ngIf='CurrentStock != undefined'>Order: {{Order}}</p>
+            <select [(ngModel)]='OrderType'>
+                <option value=''>Select</option>
+            <option value="Market Order">Market Order</option>
+            <option value="Limit Order">Limit Order</option>
+            <option value="Stop Order">Stop Order</option>
+
+            </select>
+            <br>
+            <label>Quantity:</label>
+            <input type='number' [(ngModel)]='Quantity'>
+            <br> <button>Submit Bid</button>
+        </div>
+    </div>
+    <div style="float: right;">{{username}}_Dashboard</div>
+    <br>
+    <table style="width: 60%;">
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                Symbol
+            </td>
+            <td>
+                Price
+            </td>
+            <td>
+                Action
+            </td>
+        </tr>
+        <tr *ngFor="let item of Prices | keyvalue">
+            <td>{{item.value.Name}}</td>
+            <td>{{item.key}}</td>
+            <td>{{item.value.Value | number:'1.2-2'}}</td>
+            <td>
+                <small><button [id]='item.key' (click)='ShowModal($event,"Buy")' >Buy</button></small>
+                <small><button  [id]='item.key' style="margin-left: 20px;" (click)='ShowModal($event,"Sell")'>Sell</button></small>
+            </td>
+        </tr>
+    </table>
+</div>
