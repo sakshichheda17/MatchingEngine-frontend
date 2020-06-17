@@ -1,50 +1,140 @@
-<div class="MainBackground ">
-    <div id="myModal" class="modal">
-        <!-- Modal -->
-        <div class="modal-content">
-            <span class="close" (click)='CloseModal()'>&times;</span>
-            <span *ngIf='CurrentStock != undefined'>Stock Code: {{CurrentStock.key}}</span>
-            <span style="margin-left: 30px;" *ngIf='CurrentStock != undefined'>Stock Name: {{CurrentStock.Name}}</span>
-            <p *ngIf='CurrentStock != undefined'>Price: {{CurrentStock.Value}}</p>
-            <p *ngIf='CurrentStock != undefined'>Order: {{Order}}</p>
-            <select [(ngModel)]='OrderType'>
-                <option value=''>Select</option>
-            <option value="Market Order">Market Order</option>
-            <option value="Limit Order">Limit Order</option>
-            <option value="Stop Order">Stop Order</option>
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
 
-            </select>
-            <br>
-            <label>Quantity:</label>
-            <input type='number' [(ngModel)]='Quantity'>
-            <br> <button>Submit Bid</button>
+<!--Navbar-->
+<nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <div class="navbar-start navbar-item has-text-weight-bold is-italic">DASHBOARD</div>
+    <div class="navbar-end">
+        <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+                <span class="icon is-small is-left">
+                    <i class="fa fa-user"></i>
+                </span>
+                <span class="has-text-weight-bold">  {{username}}</span>
+            </a>
+    
+            <div class="navbar-dropdown">
+              <a class="navbar-item title is-6 has-text-weight-bold is-primary">
+                <strong (click)="logOut()">Log Out</strong>              
+              </a>
+            </div>
         </div>
+        
     </div>
-    <div style="float: right;">{{username}}_Dashboard</div>
-    <br>
-    <table style="width: 60%;">
-        <tr>
-            <td>
-                Name
-            </td>
-            <td>
-                Symbol
-            </td>
-            <td>
-                Price
-            </td>
-            <td>
-                Action
-            </td>
-        </tr>
-        <tr *ngFor="let item of Prices | keyvalue">
-            <td>{{item.value.Name}}</td>
-            <td>{{item.key}}</td>
-            <td>{{item.value.Value | number:'1.2-2'}}</td>
-            <td>
-                <small><button [id]='item.key' (click)='ShowModal($event,"Buy")' >Buy</button></small>
-                <small><button  [id]='item.key' style="margin-left: 20px;" (click)='ShowModal($event,"Sell")'>Sell</button></small>
-            </td>
-        </tr>
-    </table>
+</nav>
+
+
+<div class="MainBackground ">
+    <div class="tile is-parent">
+        <article class="tile is-child notification is-medium is-primary">
+          <p class="title">Transaction Management</p>
+          <p class="subtitle">Aligned with the right tile</p>
+          <div class="content">
+          
+                <!--<div id="myModal" class="modal">-->
+                    <!-- Modal -->
+                    <!--<div class="modal-content">-->
+        <div id="myModal" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                <p class="modal-card-title has-text-weight-bold">Place Order</p>
+                <button class="delete" aria-label="close" (click)='CloseModal()'></button>
+                </header>
+        
+                <section class="modal-card-body">
+                      <p>
+                        <span class="title is-5" *ngIf='CurrentStock != undefined'><span class="has-text-weight-bold">Stock Code : </span> {{CurrentStock.key}}</span>
+                        <span class="title is-5" style="margin-left: 30px;" *ngIf='CurrentStock != undefined'> <span class="has-text-weight-bold">Stock Name :</span> {{CurrentStock.Name}}</span>
+                      </p>
+                        <p class="title is-5" *ngIf='CurrentStock != undefined'><span class="has-text-weight-bold">Price :</span> {{CurrentStock.Value}} </p>
+                        <p class="title is-5" *ngIf='CurrentStock != undefined'><span class="has-text-weight-bold">Trade Action :</span> {{Order}}</p>
+                       
+                        <div>
+                          <span class="title is-5 has-text-weight-bold">Order Type : </span>
+                                <select [(ngModel)]='OrderType' value="Select Order Type" class="title is-5">
+                                      <option value="Market Order" class="title is-5">
+                                      Market Order
+                                      </option>
+                                      <hr class="dropdown-divider">
+                                      <option value="Limit Order" class="title is-5">
+                                      Limit Order
+                                      </option>
+                                      <hr class="dropdown-divider">
+                                      <option value="Stop Order" class="title is-5">
+                                      Stop Order
+                                      </option>
+                                </select>
+                        </div>                          
+                        <br>
+                        <div>
+                          <span class="title is-5 has-text-weight-bold">Quantity : </span>
+                          <input type='number' [(ngModel)]='Quantity' class="quantity title is-5" required>      
+                        </div>              
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Submit Bid</button>
+                    <button class="button close" (click)='CloseModal()'>Cancel</button>
+                </footer>
+            </div>
+        </div>
+
+                <br>
+                <table style="width: 60%;">
+                    <tr>
+                        <td>
+                            Name
+                        </td>
+                        <td>
+                            Symbol
+                        </td>
+                        <td>
+                            Price
+                        </td>
+                        <td>
+                            Action
+                        </td>
+                    </tr>
+                    <tr *ngFor="let item of Prices | keyvalue">
+                        <td>{{item.value.Name}}</td>
+                        <td>{{item.key}}</td>
+                        <td>{{item.value.Value | number:'1.2-2'}}</td>
+                        <td>
+                            <small><button class="button is-primary is-light" [id]='item.key' (click)='ShowModal($event,"Buy")' >Buy</button></small>
+                            <small><button class="button is-primary is-light" [id]='item.key' style="margin-left: 20px;" (click)='ShowModal($event,"Sell")'>Sell</button></small>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </article>
+    </div>
 </div>
+
+
+<!--<div class="dropdown is-active">
+  <div class="dropdown-trigger">
+    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+      <span>Select</span>
+      <span class="icon is-small">
+        <i class="fas fa-angle-down" aria-hidden="true"></i>
+      </span>
+    </button>
+  </div>
+  <div class="dropdown-menu" id="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+      <option value="Market Order" class="dropdown-item">
+        Market Order
+      </option>
+      <hr class="dropdown-divider">
+      <option value="Limit Order" class="dropdown-item">
+        Limit Order
+      </option>
+      <hr class="dropdown-divider">
+      <option value="Stop Order" class="dropdown-item">
+        Stop Order
+      </option>
+    </div>
+  </div>
+</div>
+-->

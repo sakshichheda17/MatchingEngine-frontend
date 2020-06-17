@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {HttpClient} from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +10,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private route:ActivatedRoute,private http:HttpClient) { }
+  constructor(private route:ActivatedRoute,private http:HttpClient,private router: Router) { }
   username
   modal
   //API='DI2J7IQDDRDE4IMN'
@@ -61,5 +62,8 @@ export class DashboardComponent implements OnInit {
 
   CloseModal() {
     this.modal.style.display = "none";
+  }
+  logOut(){
+    this.router.navigate(['/']);
   }
 }
