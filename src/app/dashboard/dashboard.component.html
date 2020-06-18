@@ -6,12 +6,12 @@
             <span *ngIf='CurrentStock != undefined'>Stock Code: {{CurrentStock.key}}</span>
             <span style="margin-left: 30px;" *ngIf='CurrentStock != undefined'>Stock Name: {{CurrentStock.Name}}</span>
             <p *ngIf='CurrentStock != undefined'>Price: {{CurrentStock.Value}}</p>
-            <p *ngIf='CurrentStock != undefined'>Order: {{Order}}</p>
+            <p *ngIf='CurrentStock != undefined'>Order: {{TradeType}}</p>
             <select [(ngModel)]='OrderType'>
                 <option value=''>Select</option>
-            <option value="Market Order">Market Order</option>
-            <option value="Limit Order">Limit Order</option>
-            <option value="Stop Order">Stop Order</option>
+            <option value="Market">Market Order</option>
+            <option value="Limit">Limit Order</option>
+            <option value="Stop">Stop Order</option>
 
             </select>
             <br>
@@ -42,8 +42,8 @@
             <td>{{item.key}}</td>
             <td>{{item.value.Value | number:'1.2-2'}}</td>
             <td>
-                <small><button [id]='item.key' (click)='ShowModal($event,"Buy")' >Buy</button></small>
-                <small><button  [id]='item.key' style="margin-left: 20px;" (click)='ShowModal($event,"Sell")'>Sell</button></small>
+                <small><button [id]='item.key' (click)='ShowModal($event,"Ask")' >Buy</button></small>
+                <small><button  [id]='item.key' style="margin-left: 20px;" (click)='ShowModal($event,"Bid")'>Sell</button></small>
             </td>
         </tr>
     </table>

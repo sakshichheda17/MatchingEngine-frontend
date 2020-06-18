@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   //For placing Order
   CurrentStock
   OrderType=''
-  Order
+  TradeType
   Quantity
   ngOnInit(): void {
     this.route.queryParams.subscribe((res)=>{
@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit {
   } 
 
   ShowModal(event,Order){
-    this.Order=Order
+    this.TradeType=Order
     this.CurrentStock=this.Prices[event.target.id]
     this.CurrentStock.key=event.target.id
     console.log(this.CurrentStock)
