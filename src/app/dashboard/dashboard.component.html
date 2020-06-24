@@ -28,8 +28,8 @@
 <div class="MainBackground ">
     <div class="tile is-parent">
         <article class="tile is-child notification is-medium is-primary">
-            <p class="title">Transaction Management</p>
-            <p class="subtitle">Aligned with the right tile</p>
+            <p class="title">Current Stock</p>
+
             <div class="content">
 
                 <!--<div id="myModal" class="modal">-->
@@ -45,37 +45,51 @@
 
                         <section class="modal-card-body">
                             <p>
-                                <span class="title is-5" *ngIf='CurrentStock != undefined'><span class="has-text-weight-bold">Stock Code : </span> {{CurrentStock.key}}</span>
+                                <span class="title is-5" *ngIf='CurrentStock != undefined '><span class="has-text-weight-bold">Stock Code : </span> {{CurrentStock.key}}</span>
                                 <span class="title is-5" style="margin-left: 30px;" *ngIf='CurrentStock != undefined'> <span class="has-text-weight-bold">Stock Name :</span> {{CurrentStock.Name}}</span>
                             </p>
-                            <p class="title is-5" *ngIf='CurrentStock != undefined'><span class="has-text-weight-bold">Price :</span> {{CurrentStock.Value}} </p>
-                            <p class="title is-5" *ngIf='CurrentStock != undefined'><span class="has-text-weight-bold">Trade Action :</span> {{Order}}</p>
+                            <p class="title is-5" *ngIf=' CurrentStock !=undefined '><span class="has-text-weight-bold">Price :</span> <input [readOnly]='OrderType=="market" ' [(ngModel)]='Price '> </p>
+                            <p class="title is-5" *ngIf='CurrentStock !=undefined '><span class="has-text-weight-bold">Trade Action :</span> {{TradeType}}</p>
 
                             <div>
                                 <span class="title is-5 has-text-weight-bold">Order Type : </span>
-                                <select [(ngModel)]='OrderType' value="Select Order Type" class="title is-5">
-                                      <option value="Market Order" class="title is-5">
+                                <select [disabled]='Editing ' [(ngModel)]='OrderType ' value="Select Order Type" class="title is-5">
+                                      <option value="market" class="title is-5">
                                       Market Order
                                       </option>
                                       <hr class="dropdown-divider">
-                                      <option value="Limit Order" class="title is-5">
+                                      <option value="limit" class="title is-5">
                                       Limit Order
                                       </option>
                                       <hr class="dropdown-divider">
-                                      <option value="Stop Order" class="title is-5">
+                                      <option value="stop" class="title is-5">
                                       Stop Order
                                       </option>
                                 </select>
                             </div>
                             <br>
                             <div>
+                                <span class="title is-5 has-text-weight-bold">Flavor: </span>
+                                <select [(ngModel)]='flavor ' value="Select Flavor Type" class="title is-5">
+                                      <option value="allornone" class="title is-5">
+                                     All or None
+                                      </option>
+                                      <hr class="dropdown-divider">
+                                      <option value="partial" class="title is-5">
+                                    Partial
+                                      </option>
+                                     
+                                </select>
+                            </div>
+                            <br>
+                            <div>
                                 <span class="title is-5 has-text-weight-bold">Quantity : </span>
-                                <input type='number' [(ngModel)]='Quantity' class="quantity title is-5" required>
+                                <input type='number ' [(ngModel)]='Quantity ' class="quantity title is-5" required>
                             </div>
                         </section>
                         <footer class="modal-card-foot">
-                            <button class="button is-success">Submit Bid</button>
-                            <button class="button close" (click)='CloseModal()'>Cancel</button>
+                            <button class="button is-success" (click)='SubmitOrder() '>Submit {{TradeType}}</button>
+                            <button class="button close" (click)='CloseModal() '>Cancel</button>
                         </footer>
                     </div>
                 </div>
@@ -101,71 +115,121 @@
                         <td>{{item.key}}</td>
                         <td>{{item.value.Value | number:'1.2-2'}}</td>
                         <td>
-                            <small><button class="button is-primary is-light" [id]='item.key' (click)='ShowModal($event,"Buy")' >Buy</button></small>
-                            <small><button class="button is-primary is-light" [id]='item.key' style="margin-left: 20px;" (click)='ShowModal($event,"Sell")'>Sell</button></small>
+                            <small><button class="button is-primary is-light" [id]='item.key ' (click)='ShowModal($event, "Bid") ' >Bid</button></small>
+                            <small><button class="button is-primary is-light" [id]='item.key ' style="margin-left: 20px;" (click)='ShowModal($event, "Ask") '>Ask</button></small>
                         </td>
                     </tr>
                 </table>
             </div>
         </article>
     </div>
-</div>
 
+    <div class="tile is-parent">
+        <article class="tile is-child notification is-medium is-primary">
+            <p class="title">Successful Order</p>
+            <div class="content">
+                <table>
+                    <tr>
+                        <th>
+                            Trade id
+                        </th>
+                        <th>
+                            Stock Code
+                        </th>
 
-<!--<div class="dropdown is-active">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-      <span>Select</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu" role="menu">
-    <div class="dropdown-content">
-      <option value="Market Order" class="dropdown-item">
-        Market Order
-      </option>
-      <hr class="dropdown-divider">
-      <option value="Limit Order" class="dropdown-item">
-        Limit Order
-      </option>
-      <hr class="dropdown-divider">
-      <option value="Stop Order" class="dropdown-item">
-        Stop Order
-      </option>
+                        <th>
+                            Buyer
+                        </th>
+                        <th>
+                            Seller
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                    </tr>
+
+                    <tr *ngFor='let details of UserHistory.matched '>
+                        <td>{{details.trade_id}}</td>
+                        <td>{{details.stock_code || "" | uppercase}}</td>
+
+                        <td>{{details.buyer_name || "" | titlecase}}</td>
+                        <td>{{details.seller_name || "" | titlecase}}</td>
+                        <td>{{details.quantity }}</td>
+                        <td>{{details.price | number:'1.2-2'}}</td>
+
+                        <td>Successful</td>
+                    </tr>
+
+                </table>
+            </div>
+        </article>
     </div>
-<<<<<<< HEAD
-    <div style="float: right;">{{username}}_Dashboard</div>
-    <br>
-    <table style="width: 60%;">
-        <tr>
-            <td>
-                Name
-            </td>
-            <td>
-                Symbol
-            </td>
-            <td>
-                Price
-            </td>
-            <td>
-                Action
-            </td>
-        </tr>
-        <tr *ngFor="let item of Prices | keyvalue">
-            <td>{{item.value.Name}}</td>
-            <td>{{item.key}}</td>
-            <td>{{item.value.Value | number:'1.2-2'}}</td>
-            <td>
-                <small><button [id]='item.key' (click)='ShowModal($event,"Ask")' >Buy</button></small>
-                <small><button  [id]='item.key' style="margin-left: 20px;" (click)='ShowModal($event,"Bid")'>Sell</button></small>
-            </td>
-        </tr>
-    </table>
+
+    <div class="tile is-parent">
+        <article class="tile is-child notification is-medium is-primary">
+            <p class="title">User History</p>
+            <div class="content">
+                <table>
+                    <tr>
+                        <th>
+                            Order Id
+                        </th>
+                        <th>
+                            Stock Code
+                        </th>
+                        <th>
+                            Trade Type
+                        </th>
+                        <th>
+                            Order Type
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                        <th>
+                            Flavor
+                        </th>
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+                    <tr *ngFor='let details of UserHistory.queued '>
+                        <td>{{details.order_id}}</td>
+                        <td>{{details.stock_code || "" | uppercase}}</td>
+
+                        <td>{{details.trade_type || "" | titlecase}}</td>
+                        <td>{{details.order_type || "" | titlecase}}</td>
+                        <td>{{details.quantity }}</td>
+                        <td>{{details.price | number:'1.2-2'}}</td>
+                        <td>{{details.flavor || "" | titlecase}}</td>
+                        <td>Pending <button [id]='details.order_id ' (click)='EditOrder($event) '>Edit</button><button [id]='details.order_id ' (click)='Delete($event) '>Delete</button></td>
+
+                    </tr>
+                    <tr *ngFor='let details of UserHistory.unmatched '>
+                        <td>{{details.order_id}}</td>
+                        <td>{{details.stock_code || "" | uppercase}}</td>
+
+                        <td>{{details.trade_type || "" | titlecase}}</td>
+                        <td>{{details.order_type || "" | titlecase}}</td>
+                        <td>{{details.quantity }}</td>
+                        <td>{{details.price | number:'1.2-2'}}</td>
+                        <td>{{details.flavor || "" | titlecase}}</td>
+                        <td>Failed</td>
+                    </tr>
+                </table>
+            </div>
+        </article>
+    </div>
+
+
 </div>
-=======
-  </div>
-</div>
--->
->>>>>>> 146420e7f43fc062f82f2677096197197101d122
