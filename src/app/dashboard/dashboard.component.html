@@ -48,7 +48,7 @@
                                 <span class="title is-5" *ngIf='CurrentStock != undefined '><span class="has-text-weight-bold">Stock Code : </span> {{CurrentStock.key}}</span>
                                 <span class="title is-5" style="margin-left: 30px;" *ngIf='CurrentStock != undefined'> <span class="has-text-weight-bold">Stock Name :</span> {{CurrentStock.Name}}</span>
                             </p>
-                            <p class="title is-5" *ngIf=' CurrentStock !=undefined '><span class="has-text-weight-bold">Price :</span> <input [readOnly]='OrderType=="market" ' [(ngModel)]='Price '> </p>
+                            <p class="title is-5" *ngIf=' CurrentStock !=undefined '><span class="has-text-weight-bold">Price :</span> <input [readOnly]='OrderType=="market" '  class="quantity title is-5" [(ngModel)]='Price '> </p>
                             <p class="title is-5" *ngIf='CurrentStock !=undefined '><span class="has-text-weight-bold">Trade Action :</span> {{TradeType}}</p>
 
                             <div>
@@ -94,19 +94,18 @@
                     </div>
                 </div>
 
-                <br>
                 <table style="width: 60%;">
                     <tr>
-                        <td>
+                        <td class="title is-4">
                             Name
                         </td>
-                        <td>
+                        <td class="title is-4">
                             Symbol
                         </td>
-                        <td>
+                        <td class="title is-4">
                             Price
                         </td>
-                        <td>
+                        <td class="title is-4">
                             Action
                         </td>
                     </tr>
@@ -130,28 +129,28 @@
             <div class="content">
                 <table>
                     <tr>
-                        <th>
+                        <td class="title is-4">
                             Trade id
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Stock Code
-                        </th>
+                        </td>
 
-                        <th>
+                        <td class="title is-4">
                             Buyer
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Seller
-                        </th>
-                        <th>
-                            Price
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4"> 
                             Quantity
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
+                            Price
+                        </td>
+                        <td class="title is-4">
                             Status
-                        </th>
+                        </td>
                     </tr>
 
                     <tr *ngFor='let details of UserHistory.matched '>
@@ -177,30 +176,30 @@
             <div class="content">
                 <table>
                     <tr>
-                        <th>
+                        <td class="title is-4">
                             Order Id
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Stock Code
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Trade Type
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Order Type
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Quantity
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Price
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Flavor
-                        </th>
-                        <th>
+                        </td>
+                        <td class="title is-4">
                             Status
-                        </th>
+                        </td>
 
                     </tr>
                     <tr *ngFor='let details of UserHistory.queued '>
@@ -212,7 +211,10 @@
                         <td>{{details.quantity }}</td>
                         <td>{{details.price | number:'1.2-2'}}</td>
                         <td>{{details.flavor || "" | titlecase}}</td>
-                        <td>Pending <button [id]='details.order_id ' (click)='EditOrder($event) '>Edit</button><button [id]='details.order_id ' (click)='Delete($event) '>Delete</button></td>
+                        <td>Pending 
+                            <small><button class="button is-primary is-light edit" [id]='details.order_id ' (click)='EditOrder($event) '>Edit</button></small>
+                            <small><button class="button is-primary is-light del" [id]='details.order_id ' (click)='Delete($event) '>Delete</button></small>
+                        </td>
 
                     </tr>
                     <tr *ngFor='let details of UserHistory.unmatched '>
